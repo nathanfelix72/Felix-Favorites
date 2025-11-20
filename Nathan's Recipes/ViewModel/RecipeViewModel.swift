@@ -1,5 +1,5 @@
 //
-// NavigationContext.swift
+// RecipeViewModel.swift
 // Felix Nathan Project 2
 //
 // Created by Nathan Felix on 11/13/25
@@ -9,7 +9,7 @@ import SwiftUI
 import SwiftData
 
 @Observable
-class NavigationContext: ContextReferencing {
+class RecipeViewModel: ContextReferencing {
     private var modelContext: ModelContext
     
     var selectedCategoryName: String?
