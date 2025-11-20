@@ -90,14 +90,14 @@ struct RecipeEditor: View {
     }
 }
 
-#Preview("Add recipe") {
-    ModelContainerPreview(ModelContainer.sample) {
-        RecipeEditor(recipe: nil)
-    }
-}
-
-#Preview("Edit recipe") {
-    ModelContainerPreview(ModelContainer.sample) {
-        RecipeEditor(recipe: .pretzels)
-    }
-}
+//#Preview("Add recipe") {
+//    ModelContainerPreview(ModelContainer.sample) {
+//        RecipeEditor(recipe: nil)
+//    }
+//}
+//
+//#Preview("Edit recipe") {
+//    ModelContainerPreview(ModelContainer.sample) {
+//        RecipeEditor(recipe: .pretzels)
+//    }
+//}

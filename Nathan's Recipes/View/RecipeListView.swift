@@ -9,10 +9,10 @@ import SwiftUI
 import SwiftData
 
 struct RecipeListView: View {
-    let recipeCategoryName: String?
+    @Environment(RecipeViewModel.self) private var recipeViewModel
     
     var body: some View {
-        if let recipeCategoryName {
+        if let recipeCategoryName = recipeViewModel.selectedCategoryName {
             RecipeList(recipeCategoryName: recipeCategoryName)
         } else {
             ContentUnavailableView("Select a category", systemImage: "sidebar.left")
@@ -22,23 +22,15 @@ struct RecipeListView: View {
 
 private struct RecipeList: View {
     let recipeCategoryName: String
-    @Environment(NavigationContext.self) private var navigationContext
-    @Environment(\.modelContext) private var modelContext
-    @Query(sort: \Recipe.name) private var recipes: [Recipe]
+    
+    @Environment(RecipeViewModel.self) private var recipeViewModel
+    
     @State private var isEditorPresented = false
-
-    init(recipeCategoryName: String) {
-        self.recipeCategoryName = recipeCategoryName
-        let predicate = #Predicate<Recipe> { recipe in
-            recipe.category?.name == recipeCategoryName
-        }
-        _recipes = Query(filter: predicate, sort: \Recipe.name)
-    }
     
     var body: some View {
-        @Bindable var navigationContext = navigationContext
-        List(selection: $navigationContext.selectedRecipe) {
-            ForEach(recipes) { recipe in
+        @Bindable var recipeViewModel = recipeViewModel
+        List(selection: $recipeViewModel.selectedRecipe) {
+            ForEach(recipeViewModel.recipes) { recipe in
                 NavigationLink(recipe.name, value: recipe)
             }
             .onDelete(perform: removeRecipes)
@@ -47,9 +39,9 @@ private struct RecipeList: View {
             RecipeEditor(recipe: nil)
         }
         .overlay {
-            if recipes.isEmpty {
+            if recipeViewModel.recipes.isEmpty {
                 ContentUnavailableView {
-                    Label("No recipes in this category", systemImage: "fork.knife")
+                    Label("No recipes in this category", systemImage: Default.imageName)
                 } description: {
                     AddRecipeButton(isActive: $isEditorPresented)
                 }
@@ -63,13 +55,7 @@ private struct RecipeList: View {
     }
     
     private func removeRecipes(at indexSet: IndexSet) {
-        for index in indexSet {
-            let recipeToDelete = recipes[index]
-            if navigationContext.selectedRecipe?.persistentModelID == recipeToDelete.persistentModelID {
-                navigationContext.selectedRecipe = nil
-            }
-            modelContext.delete(recipeToDelete)
-        }
+        recipeViewModel.removeRecipes(at: indexSet)
     }
 }
 
@@ -90,7 +76,7 @@ private struct AddRecipeButton: View {
 //    ModelContainerPreview(ModelContainer.sample) {
 //        NavigationStack {
 //            RecipeListView(recipeCategoryName: Category.mammal.name)
-//                .environment(NavigationContext())
+//                .environment(RecipeViewModel())
 //        }
 //    }
 //}
@@ -104,7 +90,7 @@ private struct AddRecipeButton: View {
 //#Preview("No recipies") {
 //    ModelContainerPreview(ModelContainer.sample) {
 //        RecipeList(recipeCategoryName: Category.fish.name)
-//            .environment(NavigationContext())
+//            .environment(RecipeViewModel())
 //    }
 //}
 //

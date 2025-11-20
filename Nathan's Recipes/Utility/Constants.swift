@@ -6,4 +6,6 @@
 //  Copyright © 2025 Apple. All rights reserved.
 //
 
-import Foundation
+enum Default {
+    static let imageName = "fork.knife"
+}

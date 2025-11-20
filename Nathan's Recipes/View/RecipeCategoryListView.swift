@@ -9,19 +9,17 @@ import SwiftUI
 import SwiftData
 
 struct RecipeCategoryListView: View {
-    @Environment(NavigationContext.self) private var navigationContext
-    @Environment(\.modelContext) private var modelContext
-    @Query(sort: \Category.name) private var recipeCategories: [Category]
+    @Environment(RecipeViewModel.self) private var recipeViewModel
     @State private var isReloadPresented = false
 
     var body: some View {
-        @Bindable var navigationContext = navigationContext
-        List(selection: $navigationContext.selectedCategoryName) {
-            ListCategories(recipeCategories: recipeCategories)
+        @Bindable var recipeViewModel = recipeViewModel
+        List(selection: $recipeViewModel.selectedCategoryName) {
+            ListCategories(recipeCategories: recipeViewModel.recipeCategories)
         }
         .alert("Reload Sample Data?", isPresented: $isReloadPresented) {
             Button("Yes, reload sample data", role: .destructive) {
-                reloadSampleData()
+                recipeViewModel.reloadSampleData()
             }
         } message: {
             Text("Reloading the sample data deletes all changes to the current data.")
@@ -35,17 +33,8 @@ struct RecipeCategoryListView: View {
             }
         }
         .task {
-            if recipeCategories.isEmpty {
-                Category.insertSampleData(modelContext: modelContext)
-            }
+            recipeViewModel.ensureSomeDataExists()
         }
-    }
-    
-    @MainActor
-    private func reloadSampleData() {
-        navigationContext.selectedRecipe = nil
-        navigationContext.selectedCategoryName = nil
-        Category.reloadSampleData(modelContext: modelContext)
     }
 }
 
@@ -64,7 +53,7 @@ private struct ListCategories: View {
 //        NavigationStack {
 //            RecipeCategoryListView()
 //        }
-//        .environment(NavigationContext())
+//        .environment(RecipeViewModel())
 //    }
 //}
 //
@@ -75,6 +64,6 @@ private struct ListCategories: View {
 //                ListCategories(recipeCategories: [.amphibian, .bird])
 //            }
 //        }
-//        .environment(NavigationContext())
+//        .environment(RecipeViewModel())
 //    }
 //}

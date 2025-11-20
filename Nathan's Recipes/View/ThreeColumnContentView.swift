@@ -9,19 +9,19 @@ import SwiftUI
 import SwiftData
 
 struct ThreeColumnContentView: View {
-    @Environment(NavigationContext.self) private var navigationContext
+    @Environment(RecipeViewModel.self) private var recipeViewModel
     
     var body: some View {
-        @Bindable var navigationContext = navigationContext
-        NavigationSplitView(columnVisibility: $navigationContext.columnVisibility) {
+        @Bindable var recipeViewModel = recipeViewModel
+        NavigationSplitView(columnVisibility: $recipeViewModel.columnVisibility) {
             RecipeCategoryListView()
-                .navigationTitle(navigationContext.sidebarTitle)
+                .navigationTitle(recipeViewModel.sidebarTitle)
         } content: {
-            RecipeListView(recipeCategoryName: navigationContext.selectedCategoryName)
-                .navigationTitle(navigationContext.contentListTitle)
+            RecipeListView(recipeCategoryName: recipeViewModel.selectedCategoryName)
+                .navigationTitle(recipeViewModel.contentListTitle)
         } detail: {
             NavigationStack {
-                RecipeDetailView(recipe: navigationContext.selectedRecipe)
+                RecipeDetailView()
             }
         }
     }
@@ -30,6 +30,6 @@ struct ThreeColumnContentView: View {
 //#Preview {
 //    ModelContainerPreview(ModelContainer.sample) {
 //        ThreeColumnContentView()
-//            .environment(NavigationContext())
+//            .environment(RecipeViewModel())
 //    }
 //}

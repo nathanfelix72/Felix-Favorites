@@ -27,6 +27,7 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
+		FC6B17112ECECF6900989CA2 /* Utility */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Utility; sourceTree = "<group>"; };
 		FCEAD3DE2EC6355B004BAEFA /* ViewModel */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = ViewModel; sourceTree = "<group>"; };
 		FCEAD3E22EC63584004BAEFA /* View */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = View; sourceTree = "<group>"; };
 		FCEAD3E32EC63591004BAEFA /* Model */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Model; sourceTree = "<group>"; };
@@ -81,6 +82,7 @@
 		68BB54642A701B4B008EC4A5 /* Nathan's Recipes */ = {
 			isa = PBXGroup;
 			children = (
+				FC6B17112ECECF6900989CA2 /* Utility */,
 				682FDAB42A8D3DC900B53876 /* PreviewHelper */,
 				681BB4EC2A8BC35000986639 /* SampleData */,
 				68BB54692A701B4E008EC4A5 /* Assets.xcassets */,
@@ -116,6 +118,7 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
+				FC6B17112ECECF6900989CA2 /* Utility */,
 				FCEAD3DE2EC6355B004BAEFA /* ViewModel */,
 				FCEAD3E22EC63584004BAEFA /* View */,
 				FCEAD3E32EC63591004BAEFA /* Model */,

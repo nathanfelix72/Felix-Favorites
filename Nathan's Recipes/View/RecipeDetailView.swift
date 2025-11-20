@@ -9,14 +9,16 @@ import SwiftUI
 import SwiftData
 
 struct RecipeDetailView: View {
-    var recipe: Recipe?
+    
+    // MARK: - Properites
+    
     @State private var isEditing = false
     @State private var isDeleting = false
-    @Environment(\.modelContext) private var modelContext
-    @Environment(NavigationContext.self) private var navigationContext
+    
+    @Environment(RecipeViewModel.self) private var recipeViewModel
 
     var body: some View {
-        if let recipe {
+        if let recipe = recipeViewModel.selectedRecipe {
             RecipeDetailContentView(recipe: recipe)
                 .navigationTitle("\(recipe.name)")
                 .toolbar {
@@ -39,13 +41,12 @@ struct RecipeDetailView: View {
                     }
                 }
         } else {
-            ContentUnavailableView("Select a recipe", systemImage: "fork.knife")
+            ContentUnavailableView("Select a recipe", systemImage: Default.imageName)
         }
     }
     
     private func delete(_ recipe: Recipe) {
-        navigationContext.selectedRecipe = nil
-        modelContext.delete(recipe)
+        recipeViewModel.delete(recipe)
     }
 }
 
@@ -76,6 +77,6 @@ private struct RecipeDetailContentView: View {
 //#Preview {
 //    ModelContainerPreview(ModelContainer.sample) {
 //        RecipeDetailView(recipe: .pretzels)
-//            .environment(NavigationContext())
+//            .environment(RecipeViewModel())
 //    }
 //}
