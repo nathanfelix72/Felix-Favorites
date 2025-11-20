@@ -20,9 +20,7 @@ struct RecipeEditor: View {
     @State private var selectedCategory: Category?
     
     @Environment(\.dismiss) private var dismiss
-    @Environment(\.modelContext) private var modelContext
-    
-    @Query(sort: \Category.name) private var categories: [Category]
+    @Environment(RecipeViewModel.self) private var recipeViewModel
     
     var body: some View {
         NavigationStack {
@@ -31,7 +29,7 @@ struct RecipeEditor: View {
                 
                 Picker("Category", selection: $selectedCategory) {
                     Text("Select a category").tag(nil as Category?)
-                    ForEach(categories) { category in
+                    ForEach(recipeViewModel.recipeCategories) { category in
                         Text(category.name).tag(category as Category?)
                     }
                 }
@@ -78,14 +76,10 @@ struct RecipeEditor: View {
     private func save() {
         if let recipe {
             // Edit the recipe.
-            recipe.name = name
-            recipe.diet = selectedDiet
-            recipe.category = selectedCategory
+            recipeViewModel.updateRecipe(recipe, name: name, diet: selectedDiet, category: selectedCategory)
         } else {
             // Add a recipe.
-            let newRecipe = Recipe(name: name, diet: selectedDiet)
-            newRecipe.category = selectedCategory
-            modelContext.insert(newRecipe)
+            recipeViewModel.createRecipe(name: name, diet: selectedDiet, category: selectedCategory)
         }
     }
 }

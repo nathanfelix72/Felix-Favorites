@@ -21,25 +21,18 @@ class RecipeViewModel: ContextReferencing {
     
     var sidebarTitle = "Categories"
     
+    // Cached data
+    var recipeCategories: [Category] = []
+    var recipes: [Recipe] = []
+    
     // MARK: - Initialization
     
     required init(modelContext: ModelContext) {
         self.modelContext = modelContext
+        update()
     }
     
     // MARK: - Model Access
-    
-    var recipeCategories: [Category] {
-        let descriptor = FetchDescriptor<Category>(sortBy: [SortDescriptor(\Category.name)])
-        
-        return (try? modelContext.fetch(descriptor)) ?? []
-    }
-    
-    var recipes: [Recipe] {
-        let descriptor = FetchDescriptor<Recipe>(sortBy: [SortDescriptor(\Recipe.name)])
-        
-        return (try? modelContext.fetch(descriptor)) ?? []
-    }
     
     // read all recipes
     // read favorites
@@ -56,9 +49,19 @@ class RecipeViewModel: ContextReferencing {
     
     // MARK: - User Intents
     
-    // create recipe
-    // update recipe
-    // ...
+    func createRecipe(name: String, diet: Recipe.Diet, category: Category?) {
+        let newRecipe = Recipe(name: name, diet: diet)
+        newRecipe.category = category
+        modelContext.insert(newRecipe)
+        update()
+    }
+    
+    func updateRecipe(_ recipe: Recipe, name: String, diet: Recipe.Diet, category: Category?) {
+        recipe.name = name
+        recipe.diet = diet
+        recipe.category = category
+        update()
+    }
     
     func delete(_ recipe: Recipe) {
         if selectedRecipe == recipe {
@@ -66,6 +69,7 @@ class RecipeViewModel: ContextReferencing {
         }
         
         modelContext.delete(recipe)
+        update()
     }
     
     func removeRecipes(at indexSet: IndexSet) {
@@ -76,11 +80,13 @@ class RecipeViewModel: ContextReferencing {
             }
             modelContext.delete(recipeToDelete)
         }
+        update()
     }
     
     func ensureSomeDataExists() {
         if recipeCategories.isEmpty {
             Category.insertSampleData(modelContext: modelContext)
+            update()
         }
     }
     
@@ -88,11 +94,16 @@ class RecipeViewModel: ContextReferencing {
         selectedRecipe = nil
         selectedCategoryName = nil
         Category.reloadSampleData(modelContext: modelContext)
+        update()
     }
     
     // MARK: - Helpers
     
     func update() {
-        // TODO
+        let categoryDescriptor = FetchDescriptor<Category>(sortBy: [SortDescriptor(\Category.name)])
+        recipeCategories = (try? modelContext.fetch(categoryDescriptor)) ?? []
+        
+        let recipeDescriptor = FetchDescriptor<Recipe>(sortBy: [SortDescriptor(\Recipe.name)])
+        recipes = (try? modelContext.fetch(recipeDescriptor)) ?? []
     }
 }
