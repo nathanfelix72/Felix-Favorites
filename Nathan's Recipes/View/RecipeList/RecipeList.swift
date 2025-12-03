@@ -32,7 +32,9 @@ struct RecipeList: View {
         @Bindable var recipeViewModel = recipeViewModel
         List(selection: $recipeViewModel.selectedRecipe) {
             ForEach(filteredRecipes) { recipe in
-                NavigationLink(recipe.name, value: recipe)
+                NavigationLink(value: recipe) {
+                    RecipeRow(recipe: recipe)
+                }
             }
             .onDelete(perform: removeRecipes)
         }
@@ -57,6 +59,45 @@ struct RecipeList: View {
     
     private func removeRecipes(at indexSet: IndexSet) {
         recipeViewModel.removeRecipes(at: indexSet)
+    }
+}
+
+private struct RecipeRow: View {
+    let recipe: Recipe
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 4) {
+            Text(recipe.name)
+                .font(.headline)
+            
+            HStack {
+                if recipe.timeRequired > 0 {
+                    Label("\(recipe.timeRequired) min", systemImage: "clock")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                }
+                
+                if recipe.servings > 0 {
+                    Label("\(recipe.servings) servings", systemImage: "person.2")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                }
+                
+                if recipe.isFavorite {
+                    Image(systemName: "heart.fill")
+                        .font(.caption)
+                        .foregroundStyle(.red)
+                }
+            }
+            
+            if !recipe.notes.isEmpty {
+                Text(recipe.notes)
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+                    .lineLimit(2)
+            }
+        }
+        .padding(.vertical, 4)
     }
 }
 
