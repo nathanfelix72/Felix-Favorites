@@ -20,6 +20,7 @@ class RecipeViewModel: ContextReferencing {
     var columnVisibility: NavigationSplitViewVisibility = .automatic
     
     var sidebarTitle = "Categories"
+    var searchTitle = "Search"
     
     // Cached data
     var recipeCategories: [Category] = []
@@ -53,7 +54,6 @@ class RecipeViewModel: ContextReferencing {
     
     // MARK: - User Intents
     
-    // Simple compatibility convenience: keep existing simple create/update signatures
     func createRecipe(name: String, categories: [Category]) {
         createRecipe(
             name: name,
@@ -89,7 +89,6 @@ class RecipeViewModel: ContextReferencing {
         )
     }
     
-    // Full create/update with all editable fields
     func createRecipe(
         name: String,
         author: String,
@@ -117,6 +116,26 @@ class RecipeViewModel: ContextReferencing {
         newRecipe.instructions = instructions
         newRecipe.categories = categories
         modelContext.insert(newRecipe)
+        update()
+    }
+    
+    func toggleCategory(_ category: Category, _ recipe: Recipe) {
+        var updatedCategories = recipe.categories
+        
+        if let index = updatedCategories.firstIndex(where: { $0.persistentModelID == category.persistentModelID }) {
+            updatedCategories.remove(at: index)
+        } else {
+            updatedCategories.append(category)
+        }
+        
+        recipe.categories = updatedCategories
+        
+        try? modelContext.save()
+        update()
+    }
+    
+    func toggleFavorite(_ recipe: Recipe) {
+        recipe.isFavorite.toggle()
         update()
     }
     

@@ -18,7 +18,7 @@ struct RecipeCategorySlider: View {
             HStack(spacing: 8) {
                 ForEach(recipeViewModel.recipeCategories, id: \.name) { category in
                     Button {
-                        // TODO: handle category tap
+                        recipeViewModel.toggleCategory(category, recipe)
                     } label: {
                         Text(category.name)
                             .font(.caption)

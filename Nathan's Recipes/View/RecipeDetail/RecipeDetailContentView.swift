@@ -21,6 +21,17 @@ struct RecipeDetailContentView: View {
             
             Section("General") {
                 HStack {
+                    Text("Favorite")
+                    Spacer()
+                    Button {
+                        recipeViewModel.toggleFavorite(recipe)
+                    } label: {
+                        Image(systemName: recipe.isFavorite ? "heart.fill" : "heart")
+                            .foregroundColor(recipe.isFavorite ? .red : .gray)
+                    }
+                }
+                
+                HStack {
                     Text("Author")
                     Spacer()
                     Text(recipe.author)
@@ -48,13 +59,6 @@ struct RecipeDetailContentView: View {
                     Text("Calories")
                     Spacer()
                     Text("\(recipe.calories)")
-                }
-
-                HStack {
-                    Text("Favorite")
-                    Spacer()
-                    Image(systemName: recipe.isFavorite ? "star.fill" : "star")
-                        .foregroundColor(recipe.isFavorite ? .yellow : .gray)
                 }
             }
 
