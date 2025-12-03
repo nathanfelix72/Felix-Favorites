@@ -17,23 +17,7 @@ struct SearchModeView: View {
         @Bindable var recipeViewModel = recipeViewModel
         
         List(selection: $recipeViewModel.selectedCategoryNames) {
-            Section("Search Mode") {
-                // By Category - button with checkmark
-                Button {
-                    recipeViewModel.selectedSearchMode = .byCategory
-                } label: {
-                    HStack {
-                        Label(SearchMode.byCategory.rawValue, systemImage: SearchMode.byCategory.icon)
-                        Spacer()
-                        if recipeViewModel.selectedSearchMode == .byCategory {
-                            Image(systemName: "checkmark")
-                                .foregroundColor(.accentColor)
-                        }
-                    }
-                }
-                .foregroundColor(.primary)
-                
-                // Favorites and All Recipes - navigation links
+            Section("Search By:") {
                 NavigationLink(destination: FavoriteRecipesView()) {
                     Label(SearchMode.byFavorites.rawValue, systemImage: SearchMode.byFavorites.icon)
                 }
@@ -43,11 +27,8 @@ struct SearchModeView: View {
                 }
             }
             
-            // Show categories when in "By Category" mode
-            if recipeViewModel.selectedSearchMode == .byCategory {
-                Section("Categories") {
-                    CategoryList(recipeCategories: recipeViewModel.recipeCategories)
-                }
+            Section("Categories") {
+                CategoryList(recipeCategories: recipeViewModel.recipeCategories)
             }
         }
         .navigationTitle("Search")
