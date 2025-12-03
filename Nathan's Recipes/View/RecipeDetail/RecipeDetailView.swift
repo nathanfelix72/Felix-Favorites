@@ -3,7 +3,7 @@
 // Felix Nathan Project 2
 //
 // Created by Nathan Felix on 11/13/25
-// 
+//
 
 import SwiftUI
 import SwiftData
@@ -50,35 +50,7 @@ struct RecipeDetailView: View {
     }
 }
 
-private struct RecipeDetailContentView: View {
-    @Environment(RecipeViewModel.self) private var recipeViewModel
-    
-    let recipe: Recipe
-
-    var body: some View {
-        VStack {
-
-            EmptyView()
-            
-            List {
-                HStack {
-                    Text("Category")
-                    Spacer()
-                    Text("\(recipeViewModel.categoryText(for: recipe))")
-                }
-                HStack {
-                    Text("Author")
-                    Spacer()
-                    Text("\(recipe.author)")
-                }
-            }
-        }
-    }
+#Preview {
+    ContentView()
+        .modelContainer(try! ModelContainer.sample())
 }
-
-//#Preview {
-//    ModelContainerPreview(ModelContainer.sample) {
-//        RecipeDetailView(recipe: .pretzels)
-//            .environment(RecipeViewModel())
-//    }
-//}
