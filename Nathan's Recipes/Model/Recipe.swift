@@ -11,21 +11,19 @@ import SwiftData
 @Model
 final class Recipe {
     var name: String
-    var diet: Diet
-    var category: Category?
+    var author: String = "Unknown"
+    var date: Date = Date()
+    var timeRequired: Int = 0
+    var servings: Int = 1
+    var expertiseLevel: String = "Easy"
+    var calories: Int = 0
+    var isFavorite: Bool = false
+    var notes: String = ""
+    var ingredients: String = ""
+    var instructions: String = ""
+    var categories: [Category] = []
     
-    init(name: String, diet: Diet) {
+    init(name: String) {
         self.name = name
-        self.diet = diet
-    }
-}
-
-extension Recipe {
-    enum Diet: String, CaseIterable, Codable {
-        case breakfast = "Breakfast"
-        case lunch = "Lunch"
-        case dinner = "Dinner"
-        case dessert = "Dessert"
-        case snack = "Snack"
     }
 }

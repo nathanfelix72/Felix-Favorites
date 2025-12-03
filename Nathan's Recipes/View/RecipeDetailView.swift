@@ -51,6 +51,8 @@ struct RecipeDetailView: View {
 }
 
 private struct RecipeDetailContentView: View {
+    @Environment(RecipeViewModel.self) private var recipeViewModel
+    
     let recipe: Recipe
 
     var body: some View {
@@ -62,12 +64,12 @@ private struct RecipeDetailContentView: View {
                 HStack {
                     Text("Category")
                     Spacer()
-                    Text("\(recipe.category?.name ?? "")")
+                    Text("\(recipeViewModel.categoryText(for: recipe))")
                 }
                 HStack {
-                    Text("Diet")
+                    Text("Author")
                     Spacer()
-                    Text("\(recipe.diet.rawValue)")
+                    Text("\(recipe.author)")
                 }
             }
         }

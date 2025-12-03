@@ -15,6 +15,7 @@ extension Category {
     static let mexican = Category(name: "Mexican")
     static let asian = Category(name: "Asian")
     static let mediterranean = Category(name: "Mediterranean")
+    static let breakfast = Category(name: "Breakfast")
 
     static func insertSampleData(modelContext: ModelContext) {
         // Add the recipe categories to the model context.
@@ -24,6 +25,7 @@ extension Category {
         modelContext.insert(mexican)
         modelContext.insert(asian)
         modelContext.insert(mediterranean)
+        modelContext.insert(breakfast)
         
         // Add the recipes to the model context.
         modelContext.insert(Recipe.snickerdoodles)
@@ -34,12 +36,13 @@ extension Category {
         modelContext.insert(Recipe.pancakes)
         
         // Set the category for each recipe.
-        Recipe.snickerdoodles.category = american
-        Recipe.sachertorte.category = french
-        Recipe.pretzels.category = american
-        Recipe.caesarSalad.category = italian
-        Recipe.chickenParm.category = italian
-        Recipe.pancakes.category = american
+        Recipe.snickerdoodles.categories.append(american)
+        Recipe.sachertorte.categories.append(french)
+        Recipe.pretzels.categories.append(american)
+        Recipe.caesarSalad.categories.append(italian)
+        Recipe.chickenParm.categories.append(italian)
+        Recipe.pancakes.categories.append(american)
+        Recipe.pancakes.categories.append(breakfast)
     }
     
     static func reloadSampleData(modelContext: ModelContext) {

@@ -3,7 +3,7 @@
 // Felix Nathan Project 2
 //
 // Created by Nathan Felix on 11/13/25
-// 
+//
 
 import SwiftUI
 import SwiftData
@@ -47,19 +47,24 @@ class RecipeViewModel: ContextReferencing {
         }
     }
     
+    func categoryText(for recipe: Recipe) -> String {
+        recipe.categories.compactMap(\.name).joined(separator: ", ")
+    }
+    
     // MARK: - User Intents
     
-    func createRecipe(name: String, diet: Recipe.Diet, category: Category?) {
-        let newRecipe = Recipe(name: name, diet: diet)
-        newRecipe.category = category
+    func createRecipe(name: String, category: Category?) {
+        let newRecipe = Recipe(name: name)
+        // Assign the selected category to the recipe's categories array (supporting multiple categories).
+        newRecipe.categories = category.map { [$0] } ?? []
         modelContext.insert(newRecipe)
         update()
     }
     
-    func updateRecipe(_ recipe: Recipe, name: String, diet: Recipe.Diet, category: Category?) {
+    func updateRecipe(_ recipe: Recipe, name: String, category: Category?) {
         recipe.name = name
-        recipe.diet = diet
-        recipe.category = category
+        // Replace the recipe's categories with the provided selection (UI currently supports one selection).
+        recipe.categories = category.map { [$0] } ?? []
         update()
     }
     

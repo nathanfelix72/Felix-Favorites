@@ -11,9 +11,7 @@ import SwiftData
 @Model
 final class Category {
     @Attribute(.unique) var name: String
-    // `.cascade` tells SwiftData to delete all recipes contained in the
-    // category when deleting it.
-    @Relationship(deleteRule: .cascade, inverse: \Recipe.category)
+    @Relationship(deleteRule: .nullify, inverse: \Recipe.categories)
     var recipes = [Recipe]()
     
     init(name: String) {

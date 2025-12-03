@@ -16,7 +16,6 @@ struct RecipeEditor: View {
     }
     
     @State private var name = ""
-    @State private var selectedDiet = Recipe.Diet.breakfast
     @State private var selectedCategory: Category?
     
     @Environment(\.dismiss) private var dismiss
@@ -31,12 +30,6 @@ struct RecipeEditor: View {
                     Text("Select a category").tag(nil as Category?)
                     ForEach(recipeViewModel.recipeCategories) { category in
                         Text(category.name).tag(category as Category?)
-                    }
-                }
-                
-                Picker("Diet", selection: $selectedDiet) {
-                    ForEach(Recipe.Diet.allCases, id: \.self) { diet in
-                        Text(diet.rawValue).tag(diet)
                     }
                 }
             }
@@ -66,8 +59,7 @@ struct RecipeEditor: View {
                 if let recipe {
                     // Edit the incoming recipe.
                     name = recipe.name
-                    selectedDiet = recipe.diet
-                    selectedCategory = recipe.category
+                    selectedCategory = recipe.categories.first
                 }
             }
         }
@@ -76,10 +68,10 @@ struct RecipeEditor: View {
     private func save() {
         if let recipe {
             // Edit the recipe.
-            recipeViewModel.updateRecipe(recipe, name: name, diet: selectedDiet, category: selectedCategory)
+            recipeViewModel.updateRecipe(recipe, name: name, category: selectedCategory)
         } else {
             // Add a recipe.
-            recipeViewModel.createRecipe(name: name, diet: selectedDiet, category: selectedCategory)
+            recipeViewModel.createRecipe(name: name, category: selectedCategory)
         }
     }
 }
