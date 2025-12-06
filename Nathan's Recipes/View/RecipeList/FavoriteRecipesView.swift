@@ -17,19 +17,23 @@ struct FavoriteRecipesView: View {
         @Bindable var recipeViewModel = recipeViewModel
         
         List(selection: $recipeViewModel.selectedRecipe) {
-            ForEach(recipeViewModel.favoriteRecipes) { recipe in
+            ForEach(recipeViewModel.filteredFavoriteRecipes) { recipe in
                 NavigationLink(value: recipe) {
                     RecipeListRow(recipe: recipe)
                 }
             }
         }
         .navigationTitle("Favorite Recipes")
+        .searchable(text: $recipeViewModel.searchText, prompt: "Search")
+        .onAppear {
+            recipeViewModel.searchText = ""
+        }
         .overlay {
-            if recipeViewModel.favoriteRecipes.isEmpty {
+            if recipeViewModel.filteredFavoriteRecipes.isEmpty {
                 ContentUnavailableView {
-                    Label("No favorite recipes yet", systemImage: "heart.slash")
+                    Label(recipeViewModel.searchText.isEmpty ? "No recipes" : "No favorite recipes with this search", systemImage: "heart.slash")
                 } description: {
-                    Text("Mark recipes as favorites to see them here")
+                    Text(recipeViewModel.searchText.isEmpty ? "Add some recipes to your favorites" : "No recipes with this search")
                 }
             }
         }

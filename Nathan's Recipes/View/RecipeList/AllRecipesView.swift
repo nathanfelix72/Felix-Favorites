@@ -19,7 +19,7 @@ struct AllRecipesView: View {
         @Bindable var recipeViewModel = recipeViewModel
         
         List(selection: $recipeViewModel.selectedRecipe) {
-            ForEach(searchResults) { recipe in
+            ForEach(recipeViewModel.filteredRecipes) { recipe in
                 NavigationLink(value: recipe) {
                     RecipeListRow(recipe: recipe)
                 }
@@ -29,6 +29,9 @@ struct AllRecipesView: View {
         .navigationTitle("All Recipes")
         .sheet(isPresented: $isEditorPresented) {
             RecipeEditor(recipe: nil)
+        }
+        .onAppear {
+            recipeViewModel.searchText = ""
         }
         .overlay {
             if searchResults.isEmpty {
@@ -44,6 +47,7 @@ struct AllRecipesView: View {
                 AddRecipeButton(isActive: $isEditorPresented)
             }
         }
+        .searchable(text: $recipeViewModel.searchText, prompt: "Search")
     }
     
     private func removeRecipes(at indexSet: IndexSet) {

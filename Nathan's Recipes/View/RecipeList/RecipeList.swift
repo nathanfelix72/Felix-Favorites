@@ -17,7 +17,7 @@ struct RecipeList: View {
     
     // Filter recipes by the selected category
     private var filteredRecipes: [Recipe] {
-        let filtered = recipeViewModel.recipes.filter { recipe in
+        let filtered = recipeViewModel.filteredRecipes.filter { recipe in
             let hasCategory = recipe.categories.contains { category in
                 category.name == recipeCategoryName
             }
@@ -39,6 +39,9 @@ struct RecipeList: View {
         .sheet(isPresented: $isEditorPresented) {
             RecipeEditor(recipe: nil)
         }
+        .onAppear {
+            recipeViewModel.searchText = ""
+        }
         .overlay {
             if filteredRecipes.isEmpty {
                 ContentUnavailableView {
@@ -53,6 +56,7 @@ struct RecipeList: View {
                 AddRecipeButton(isActive: $isEditorPresented)
             }
         }
+        .searchable(text: $recipeViewModel.searchText, prompt: "Search")
     }
     
     private func removeRecipes(at indexSet: IndexSet) {

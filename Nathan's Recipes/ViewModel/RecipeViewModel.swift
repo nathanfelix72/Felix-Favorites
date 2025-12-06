@@ -33,6 +33,7 @@ class RecipeViewModel: ContextReferencing {
     var selectedCategoryNames: String?
     var selectedRecipe: Recipe?
     var columnVisibility: NavigationSplitViewVisibility = .automatic
+    var searchText: String = ""
     
     var sidebarTitle = "Search"
     var searchTitle = "Search"
@@ -43,6 +44,26 @@ class RecipeViewModel: ContextReferencing {
     
     var favoriteRecipes: [Recipe] {
         recipes.filter { $0.isFavorite }
+    }
+    
+    var filteredRecipes: [Recipe] {
+        if searchText.isEmpty {
+            return recipes
+        }
+        
+        return recipes.filter { recipe in
+            recipe.name.localizedCaseInsensitiveContains(searchText) || recipe.author.localizedStandardContains(searchText) || recipe.ingredients.localizedStandardContains(searchText) || recipe.instructions.localizedStandardContains(searchText) || recipe.notes.localizedStandardContains(searchText)
+        }
+    }
+    
+    var filteredFavoriteRecipes: [Recipe] {
+        if searchText.isEmpty {
+            return favoriteRecipes
+        }
+        
+        return recipes.filter { recipe in
+            recipe.name.localizedCaseInsensitiveContains(searchText) || recipe.author.localizedStandardContains(searchText) || recipe.ingredients.localizedStandardContains(searchText) || recipe.instructions.localizedStandardContains(searchText) || recipe.notes.localizedStandardContains(searchText)
+        }
     }
     
     // MARK: - Initialization

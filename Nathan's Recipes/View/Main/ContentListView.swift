@@ -13,10 +13,14 @@ struct ContentListView: View {
     @Environment(RecipeViewModel.self) private var recipeViewModel
     
     var body: some View {
-        if let categoryName = recipeViewModel.selectedCategoryNames {
-            RecipeList(recipeCategoryName: categoryName)
-        } else {
-            ContentUnavailableView("Select a category or search option", systemImage: "sidebar.left")
+        @Bindable var recipeViewModel = recipeViewModel
+        
+        Group {
+            if let categoryName = recipeViewModel.selectedCategoryNames {
+                RecipeList(recipeCategoryName: categoryName)
+            } else {
+                ContentUnavailableView("Select a category or search option", systemImage: "sidebar.left")
+            }
         }
     }
 }
