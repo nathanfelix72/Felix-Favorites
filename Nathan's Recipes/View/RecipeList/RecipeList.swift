@@ -97,6 +97,7 @@ struct RecipeList: View {
             }
         }
         .searchable(text: $recipeViewModel.searchText, prompt: "Search")
+        .navigationTitle(recipeCategoryName)
     }
     
     private func removeRecipes(at indexSet: IndexSet) {

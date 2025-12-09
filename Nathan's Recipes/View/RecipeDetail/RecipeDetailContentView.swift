@@ -70,7 +70,7 @@ struct RecipeDetailContentView: View {
                 }
 
                 HStack {
-                    Text("Calories")
+                    Text("Calories per Serving")
                     Spacer()
                     Text("\(recipe.calories)")
                 }

@@ -58,7 +58,7 @@ struct RecipeEditor: View {
                     }
                     HStack {
                         Stepper(value: $calories, in: 0...10000, step: 10) {
-                            Text("Calories: \(calories)")
+                            Text("Calories per serving: \(calories)")
                         }
                     }
                     Toggle("Favorite", isOn: $isFavorite)

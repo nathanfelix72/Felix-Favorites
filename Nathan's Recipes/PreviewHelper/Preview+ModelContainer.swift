@@ -12,7 +12,7 @@ extension ModelContainer {
         let schema = Schema([Category.self, Recipe.self])
         let configuration = ModelConfiguration(isStoredInMemoryOnly: true)
         let container = try ModelContainer(for: schema, configurations: [configuration])
-        Task { @MainActor in
+        MainActor.assumeIsolated {
             Category.insertSampleData(modelContext: container.mainContext)
         }
         return container
